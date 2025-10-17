@@ -1,0 +1,122 @@
+{
+  "// NOTE": "Copy this file to config.secret.json and fill in your actual API keys",
+  "// WARNING": "Never commit config.secret.json to version control",
+  
+  "api_keys": {
+    "openai": {
+      "api_key": "sk-REPLACE_WITH_YOUR_KEY",
+      "organization_id": null,
+      "enabled": true,
+      "// docs": "https://platform.openai.com/api-keys"
+    },
+    
+    "senso": {
+      "api_key": "REPLACE_WITH_YOUR_KEY",
+      "base_url": "https://sdk.senso.ai/api/v1",
+      "enabled": false,
+      "// docs": "Contact Senso for API documentation"
+    },
+    
+    "airia": {
+      "token": "REPLACE_WITH_YOUR_TOKEN",
+      "base_url": "https://api.airia.ai/v1",
+      "enabled": false,
+      "// docs": "Contact Airia for API documentation"
+    },
+    
+    "intercom": {
+      "app_id": "REPLACE_WITH_YOUR_WORKSPACE_ID",
+      "access_token": "REPLACE_WITH_YOUR_ACCESS_TOKEN",
+      "api_base": "https://api.intercom.io",
+      "identity_verification_secret": null,
+      "enabled": false,
+      "// docs": "https://developers.intercom.com/docs"
+    },
+    
+    "stripe": {
+      "secret_key": "sk_test_REPLACE",
+      "publishable_key": "pk_test_REPLACE",
+      "webhook_secret": "whsec_REPLACE",
+      "enabled": false,
+      "// docs": "https://dashboard.stripe.com/apikeys"
+    },
+    
+    "twilio": {
+      "account_sid": "AC_REPLACE",
+      "auth_token": "REPLACE_WITH_YOUR_AUTH_TOKEN",
+      "phone_number": "+1REPLACE",
+      "messaging_service_sid": null,
+      "enabled": false,
+      "// docs": "https://console.twilio.com"
+    },
+    
+    "segment": {
+      "write_key": "REPLACE_WITH_YOUR_WRITE_KEY",
+      "enabled": false,
+      "// docs": "https://app.segment.com/settings/api-keys"
+    },
+    
+    "sentry": {
+      "dsn": "https://REPLACE@REPLACE.ingest.sentry.io/REPLACE",
+      "environment": "development",
+      "enabled": false,
+      "// docs": "https://sentry.io/settings/projects/"
+    },
+    
+    "elevenlabs": {
+      "api_key": "REPLACE_WITH_YOUR_KEY",
+      "voice_id": "Rachel",
+      "model_id": "eleven_monolingual_v1",
+      "enabled": false,
+      "// docs": "https://elevenlabs.io/docs/api-reference/authentication"
+    },
+    
+    "snowflake": {
+      "user": "REPLACE_WITH_YOUR_USERNAME",
+      "password": "REPLACE_WITH_YOUR_PASSWORD",
+      "account": "REPLACE.REGION",
+      "warehouse": "COMPUTE_WH",
+      "database": "DEMO_DB",
+      "schema": "PUBLIC",
+      "role": "SYSADMIN",
+      "enabled": false,
+      "// docs": "https://docs.snowflake.com"
+    },
+    
+    "redpanda": {
+      "brokers": "localhost:9092",
+      "topic": "events.demo",
+      "sasl_username": null,
+      "sasl_password": null,
+      "enabled": false,
+      "// docs": "https://docs.redpanda.com"
+    },
+    
+    "truefoundry": {
+      "endpoint": "https://your-control-plane.truefoundry.com/api/llm",
+      "token": "REPLACE_WITH_YOUR_TOKEN",
+      "enabled": false,
+      "// docs": "https://docs.truefoundry.com"
+    }
+  },
+  
+  "environments": {
+    "development": {
+      "debug": true,
+      "log_level": "DEBUG",
+      "use_sandbox": true
+    },
+    "staging": {
+      "debug": false,
+      "log_level": "INFO",
+      "use_sandbox": true
+    },
+    "production": {
+      "debug": false,
+      "log_level": "WARNING",
+      "use_sandbox": false
+    }
+  },
+  
+  "current_environment": "development"
+}

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Integration Code Generator - Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .api-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .api-checkbox {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .api-checkbox:hover {
+            background: #e0e0e0;
+        }
+        .api-checkbox input {
+            margin-right: 8px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+            color: #667eea;
+        }
+        .result {
+            margin-top: 30px;
+            display: none;
+        }
+        .result h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .code-file {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .code-file-header {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .code-file-content {
+            padding: 15px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            white-space: pre;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+        .code-file.expanded .code-file-content {
+            display: block;
+        }
+        .error {
+            background: #fee;
+            color: #c00;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 API Integration Code Generator</h1>
+        
+        <div class="input-group">
+            <label for="repo-url">GitHub Repository URL:</label>
+            <input type="text" id="repo-url" placeholder="https://github.com/user/repo" value="https://github.com/HomeroRR/FastAPIStarterPack">
+        </div>
+
+        <div class="input-group">
+            <label>Select APIs to integrate:</label>
+            <div class="api-selector">
+                <label class="api-checkbox">
+                    <input type="checkbox" value="openai" checked> OpenAI
+                </label>
+                <label class="api-checkbox">
+                    <input type="checkbox" value="stripe" checked> Stripe
+                </label>
+                <label class="api-checkbox">
+                    <input type="checkbox" value="intercom"> Intercom
+                </label>
+                <label class="api-checkbox">
+                    <input type="checkbox" value="segment"> Segment
+                </label>
+                <label class="api-checkbox">
+                    <input type="checkbox" value="sentry"> Sentry
+                </label>
+                <label class="api-checkbox">
+                    <input type="checkbox" value="senso"> Senso
+                </label>
+                <label class="api-checkbox">
+                    <input type="checkbox" value="airia"> Airia
+                </label>
+                <label class="api-checkbox">
+                    <input type="checkbox" value="snowflake"> Snowflake
+                </label>
+                <label class="api-checkbox">
+                    <input type="checkbox" value="redpanda"> Redpanda
+                </label>
+            </div>
+        </div>
+
+        <button id="generate-btn" onclick="generateCode()">Generate Integration Code</button>
+
+        <div class="loading" id="loading">
+            <p>⏳ Generating integration code...</p>
+            <p>This may take up to 30 seconds</p>
+        </div>
+
+        <div class="result" id="result">
+            <h2>Generated Integration Code</h2>
+            
+            <div class="stats" id="stats"></div>
+            
+            <div id="code-files"></div>
+            
+            <div id="dependencies"></div>
+            
+            <div id="env-vars"></div>
+        </div>
+
+        <div id="error"></div>
+    </div>
+
+    <script>
+        // Update with your deployed Vercel URL
+        const API_URL = 'https://api-integration-generator-etg071j5f-stans-projects-3c23715a.vercel.app/api/generate';
+
+        async function generateCode() {
+            const repoUrl = document.getElementById('repo-url').value;
+            const checkboxes = document.querySelectorAll('.api-checkbox input:checked');
+            const apis = Array.from(checkboxes).map(cb => cb.value);
+
+            if (!repoUrl) {
+                alert('Please enter a GitHub repository URL');
+                return;
+            }
+
+            if (apis.length === 0) {
+                alert('Please select at least one API');
+                return;
+            }
+
+            // Show loading, hide results
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('error').innerHTML = '';
+            document.getElementById('generate-btn').disabled = true;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        repo_url: repoUrl,
+                        apis: apis
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to generate code');
+                }
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                displayResults(data);
+
+            } catch (error) {
+                document.getElementById('error').innerHTML = `
+                    <div class="error">
+                        <strong>Error:</strong> ${error.message}
+                    </div>
+                `;
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('generate-btn').disabled = false;
+            }
+        }
+
+        function displayResults(data) {
+            document.getElementById('result').style.display = 'block';
+
+            // Display stats
+            const stats = `
+                <div class="stat">
+                    <div class="stat-value">${Object.keys(data.code_files || {}).length}</div>
+                    <div class="stat-label">Files Generated</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">${(data.dependencies || []).length}</div>
+                    <div class="stat-label">Dependencies</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">${Object.keys(data.env_variables || {}).length}</div>
+                    <div class="stat-label">Env Variables</div>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = stats;
+
+            // Display code files
+            let filesHtml = '';
+            for (const [path, content] of Object.entries(data.code_files || {})) {
+                filesHtml += `
+                    <div class="code-file" onclick="toggleCode(this)">
+                        <div class="code-file-header">
+                            <span>📄 ${path}</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="code-file-content">${escapeHtml(content)}</div>
+                    </div>
+                `;
+            }
+            document.getElementById('code-files').innerHTML = filesHtml;
+
+            // Display dependencies
+            if (data.dependencies && data.dependencies.length > 0) {
+                document.getElementById('dependencies').innerHTML = `
+                    <div class="code-file">
+                        <div class="code-file-header">📦 Dependencies (requirements.txt)</div>
+                        <div class="code-file-content" style="display: block">${data.dependencies.join('\n')}</div>
+                    </div>
+                `;
+            }
+
+            // Display environment variables
+            if (data.env_variables && Object.keys(data.env_variables).length > 0) {
+                let envContent = '';
+                for (const [key, value] of Object.entries(data.env_variables)) {
+                    envContent += `${key}=${value}\n`;
+                }
+                document.getElementById('env-vars').innerHTML = `
+                    <div class="code-file">
+                        <div class="code-file-header">🔐 Environment Variables (.env.example)</div>
+                        <div class="code-file-content" style="display: block">${envContent}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleCode(element) {
+            element.classList.toggle('expanded');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Allow Enter key to generate
+        document.getElementById('repo-url').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                generateCode();
+            }
+        });
+    </script>
+</body>
+</html>
